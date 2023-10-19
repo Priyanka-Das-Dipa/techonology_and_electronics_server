@@ -28,8 +28,15 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     await client.connect();
 
-    const iphoneCollection = client.db('iPhoneDB').collection('coffee')
+    const iphoneCollection = client.db('iPhoneDB').collection('iphone')
 
+
+
+    app.get('/iPhone', async(req, res)=>{
+      const cursor = iphoneCollection.find()
+      const result = await cursor.toArray()
+      res.send(result)
+    })
     app.post('/iPhone', async(req, res)=>{
         const newProduct = req.body;
         console.log(newProduct)
