@@ -1,5 +1,5 @@
 const express = require('express');
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const cors = require('cors');
 require('dotenv').config();
 const app = express();
@@ -30,7 +30,12 @@ async function run() {
 
     const iphoneCollection = client.db('iPhoneDB').collection('iphone')
 
-
+    app.get('/iphone/:id', async(req, res)=>{
+      const id = req.params.id;
+      const query = {_id : new ObjectId(id)}
+      const result = await iphoneCollection.findOne(query)
+      res.send(result)
+    })
 
     app.get('/iPhone', async(req, res)=>{
       const cursor = iphoneCollection.find()
