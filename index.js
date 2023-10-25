@@ -27,10 +27,9 @@ async function run() {
     // await client.connect();
 
     const iphoneCollection = client.db("iPhoneDB").collection("iphone");
+    const addCollection = client.db("iPhoneDB").collection("addToCart");
 
-    
-    
-
+    // add and update product
     app.get("/iPhone", async (req, res) => {
       const cursor = iphoneCollection.find();
       const result = await cursor.toArray();
@@ -67,7 +66,21 @@ async function run() {
         },
       };
       const result = await iphoneCollection.updateOne(filter, product, options);
-      res.send(result)
+      res.send(result);
+    });
+
+    // addToCard
+    app.post("/addToCart", async (req, res) => {
+      const addProduct = req.body;
+      console.log(addProduct);
+      
+      const result = await addCollection.insertOne(addProduct);
+      res.send(result);
+    });
+    app.get("/addToCart", async (req, res) => {
+      const cursor = addCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
     // Send a ping to confirm a successful connection
